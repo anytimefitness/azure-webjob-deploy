@@ -18,6 +18,9 @@
   "homepage": "https://github.com/anytimefitness/azure-webjob-deploy#readme",
   "dependencies": {
     "@actions/core": "^1.2.4",
-    "@actions/github": "^4.0.0"
+    "@actions/github": "^4.0.0",
+    "node-stream-zip": "^1.11.2",
+    "request": "^2.88.2",
+    "xml2json-light": "^1.0.6"
   }
 }
