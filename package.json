@@ -1,0 +1,23 @@
+{
+  "name": "azure-webjob-deploy",
+  "version": "1.0.0",
+  "description": "GitHub Action for deploying webjobs to an Azure App Service",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/anytimefitness/azure-webjob-deploy.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/anytimefitness/azure-webjob-deploy/issues"
+  },
+  "homepage": "https://github.com/anytimefitness/azure-webjob-deploy#readme",
+  "dependencies": {
+    "@actions/core": "^1.2.4",
+    "@actions/github": "^4.0.0"
+  }
+}
