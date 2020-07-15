@@ -28228,7 +28228,8 @@ try {
     url: apiUrl,
     headers: {
       Authorization: authHeader,
-      'Content-Type': 'application/zip'
+      'Content-Type': 'application/zip',
+      'Content-Disposition': 'attachement;'
     },
   };
 
