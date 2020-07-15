@@ -13,7 +13,7 @@ try {
   const zipFile = core.getInput('zip-file');
   const publishProfile = core.getInput('publish-profile');
   const type = core.getInput('type');
-  if (type != 'continuous' || type != 'triggered') {
+  if (type != 'continuous' && type != 'triggered') {
     throw `Type must either be 'continuous' or 'triggered'. Found ${type}`;
   }
   const name = core.getInput('name');
