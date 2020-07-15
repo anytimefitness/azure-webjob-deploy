@@ -7,6 +7,8 @@ const StreamZip = require('node-stream-zip');
 
 // Much cribbed from here - https://github.com/srijken/azure-zip-deploy/blob/master/action.yml
 
+console.log("Starting job - deploy webjob");
+
 try {
   const zipFile = core.getInput('zip-file');
   const publishProfile = core.getInput('publish-profile');
@@ -15,6 +17,8 @@ try {
     throw `Type must either be 'continuous' or 'triggered'. Found ${type}`;
   }
   const name = core.getInput('name');
+
+  console.log("Read Input");
 
   const profile = xml2json.xml2json(publishProfile);
   const msDeployProfile = profile.publishData.publishProfile.find(x => x.publishMethod === 'MSDeploy');
@@ -25,6 +29,8 @@ try {
   const authHeader = `Basic ${Buffer.from(`${userName}:${password}`).toString('base64')}`;
 
   const apiUrl = `https://${msDeployProfile.publishUrl}/api/${type}webjobs/${name}`;
+
+  // TODO: Logging to debug
 
   console.log(apiUrl);
 
@@ -38,7 +44,7 @@ try {
       const desc = entry.isDirectory ? 'directory' : `${entry.size} bytes`;
       console.log(`Entry ${entry.name}: ${desc}`);
     }
-    // Do not forget to close the file once you're done
+    console.log("Did the zip thing");// Do not forget to close the file once you're done
     zip.close()
   });
 
@@ -47,6 +53,8 @@ try {
       Authorization: authHeader
     }
   }));
+
+  console.log("After the PUT request");
 
 } catch (error) {
   core.setFailed(error.message);
