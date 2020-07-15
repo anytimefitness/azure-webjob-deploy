@@ -40,7 +40,7 @@ try {
     console.log('Entries read: ' + zip.entriesCount);
     for (const entry of Object.values(zip.entries())) {
       const desc = entry.isDirectory ? 'directory' : `${entry.size} bytes`;
-      console.log(`Entry ${entry.name}: ${desc}`);
+      //console.log(`Entry ${entry.name}: ${desc}`);
     }
     console.log("Did the zip thing");// Do not forget to close the file once you're done
     zip.close()
@@ -50,12 +50,14 @@ try {
     method: 'PUT',
     url: apiUrl,
     headers: {
-      Authorization: authHeader
+      Authorization: authHeader,
+      'Content-Type': 'application/zip'
     },
   };
 
   fs.createReadStream(zipFile).pipe(request(options, function (error, response) {
     if (error) throw new Error(error);
+    console.log("After response");
     console.log(response.body);
   }));
 
