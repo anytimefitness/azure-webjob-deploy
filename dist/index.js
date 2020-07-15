@@ -28229,7 +28229,7 @@ try {
     headers: {
       Authorization: authHeader,
       'Content-Type': 'application/zip',
-      'Content-Disposition': 'attachement;'
+      'Content-Disposition': `attachement; filename=${name}.zip`
     },
   };
 
