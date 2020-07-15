@@ -28207,8 +28207,6 @@ try {
 
   const apiUrl = `https://${msDeployProfile.publishUrl}/api/${type}webjobs/${name}`;
 
-  // TODO: Logging to debug
-
   console.log(apiUrl);
 
   const zip = new StreamZip({
@@ -28225,10 +28223,17 @@ try {
     zip.close()
   });
 
-  fs.createReadStream(zipFile).pipe(request.put(apiUrl, {
+  var options = {
+    method: 'PUT',
+    url: apiUrl,
     headers: {
       Authorization: authHeader
-    }
+    },
+  };
+
+  fs.createReadStream(zipFile).pipe(request(options, function (error, response) {
+    if (error) throw new Error(error);
+    console.log(response.body);
   }));
 
   console.log("After the PUT request");
