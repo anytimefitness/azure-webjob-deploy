@@ -57,5 +57,8 @@ try {
   console.log("After the PUT request");
 
 } catch (error) {
+  console.log("Error");
+  console.log(error);
+  console.log(error.message);
   core.setFailed(error.message);
 }
