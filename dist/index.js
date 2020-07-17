@@ -28212,13 +28212,18 @@ try {
     zip.close()
   });
 
+  console.log("Reading zip file");
+
   fs.createReadStream(zipFile).pipe(request.put(apiUrl, {
     headers: {
       Authorization: authHeader
     }
+  }, function (error, resp) {
+    if (error) console.log(error);
   }));
 
 } catch (error) {
+  console.log(error);
   core.setFailed(error.message);
 }
 
