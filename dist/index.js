@@ -28182,20 +28182,9 @@ const fs = __webpack_require__(747);
 const xml2json = __webpack_require__(831);
 const StreamZip = __webpack_require__(400);
 
-// Much cribbed from here - https://github.com/srijken/azure-zip-deploy/blob/master/action.yml
-
-console.log("Starting job - deploy webjob");
-
 try {
   const zipFile = core.getInput('zip-file');
   const publishProfile = core.getInput('publish-profile');
-  const type = core.getInput('type');
-  if (type != 'continuous' && type != 'triggered') {
-    throw `Type must either be 'continuous' or 'triggered'. Found ${type}`;
-  }
-  const name = core.getInput('name');
-
-  console.log("Read Input");
 
   const profile = xml2json.xml2json(publishProfile);
   const msDeployProfile = profile.publishData.publishProfile.find(x => x.publishMethod === 'MSDeploy');
@@ -28205,7 +28194,7 @@ try {
 
   const authHeader = `Basic ${Buffer.from(`${userName}:${password}`).toString('base64')}`;
 
-  const apiUrl = `https://${msDeployProfile.publishUrl}/api/${type}webjobs/${name}`;
+  const apiUrl = `https://${msDeployProfile.publishUrl}/api/zip/site/wwwroot/`;
 
   console.log(apiUrl);
 
@@ -28217,34 +28206,19 @@ try {
     console.log('Entries read: ' + zip.entriesCount);
     for (const entry of Object.values(zip.entries())) {
       const desc = entry.isDirectory ? 'directory' : `${entry.size} bytes`;
-      //console.log(`Entry ${entry.name}: ${desc}`);
+      console.log(`Entry ${entry.name}: ${desc}`);
     }
-    console.log("Did the zip thing");// Do not forget to close the file once you're done
+    // Do not forget to close the file once you're done
     zip.close()
   });
 
-  var options = {
-    method: 'PUT',
-    url: apiUrl,
+  fs.createReadStream(zipFile).pipe(request.put(apiUrl, {
     headers: {
-      Authorization: authHeader,
-      'Content-Type': 'application/zip',
-      'Content-Disposition': `attachement; filename=${name}.zip`
-    },
-  };
-
-  fs.createReadStream(zipFile).pipe(request(options, function (error, response) {
-    if (error) throw new Error(error);
-    console.log("After response");
-    console.log(response.body);
+      Authorization: authHeader
+    }
   }));
 
-  console.log("After the PUT request");
-
 } catch (error) {
-  console.log("Error");
-  console.log(error);
-  console.log(error.message);
   core.setFailed(error.message);
 }
 
